@@ -3,12 +3,12 @@ import linecache
 import random
 from svmutil import *
 
-target_path = r'E:\clinics\temp.xlsx'
+target_path = r'src\temp.xlsx'
 
-svm_path = r'E:\clinics\svm_form1'
-svm_path2 = r'E:\clinics\svm_form2'
-random_svm_path = r'E:\clinics\random_svm_form'
-random_svm_path2 = r'E:\clinics\random_svm_form2'
+svm_path = r'src\svm_form1'
+svm_path2 = r'src\svm_form2'
+random_svm_path = r'src\random_svm_form'
+random_svm_path2 = r'src\random_svm_form2'
 
 
 def get_svm_form_test_no_copy(r_path, w_path, sheet_num, feas_col, label_col, label_times=1):
@@ -112,7 +112,7 @@ def get_random_samples(r_path, w_path, train_0_num, test_0_num, percent=0.7):
 
 def get_svm_model(path, train_num, test_1_num):
     y, x = svm_read_problem(path)
-    m = svm_train(y[:train_num], x[:train_num], '-t 2 -h 0 -c 3 -w1 0.45 -w0 0.4')
+    m = svm_train(y[:train_num], x[:train_num], '-t 1 -h 1 -c 10')
     # m = svm_train(y[:train_num], x[:train_num], '-t 1 -h 0 -c 20 -w1 0.5 -w0 0.5')
     p_label, p_acc, p_val = svm_predict(y[train_num:], x[train_num:], m)
     print(p_acc)
@@ -128,16 +128,18 @@ def get_svm_model(path, train_num, test_1_num):
 is_rand = True
 
 if is_rand:
-    # 特征
-    feas = [i for i in range(49)]
-    # feas = [i for i in range(31)]
+    # # 特征
+    # feas = [i for i in range(70)]
+    # # feas = [i for i in range(31)]
     # rmv = [2,3,4,5,9,10,27,28,41,45,47]
-    # rmv = [27,28,41,45]
+    # # rmv = [27,28,41,45]
     # for j in rmv:
     #     feas.remove(j)
 
+    feas = [1, 15, 19, 20, 21, 23, 25, 26, 42]
+
     # svm可读格式
-    label_nums, train_0_num, test_0_num = get_svm_form_test_no_copy(target_path, svm_path, 5, feas, 71, 3)
+    label_nums, train_0_num, test_0_num = get_svm_form_test_no_copy(target_path, svm_path, 6, feas, 70, 3)
     # label_nums, train_0_num, test_0_num = get_svm_form_test_no_copy(target_path, svm_path2, 6, feas, 31, 3)
     print('train_0_num', train_0_num)
     print('test_0_num', test_0_num)

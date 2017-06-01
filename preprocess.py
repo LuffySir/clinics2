@@ -9,6 +9,7 @@ LN_path = r'E:\clinics\LN.xlsx'
 comorbidities_path = r'E:\clinics\comorbidities.xlsx'
 temp_path = r'E:\clinics\temp.xlsx'
 scale_path = r'E:\clinics\scale.xlsx'
+temp_path2 = r'E:\clinics\temp2.xlsx'
 
 
 # 添加列号
@@ -253,10 +254,24 @@ def fill_and_trans(r_path, w_path):
             follow_up_day = 41699
             pathology_sheet.write(i, 46, 41699)
 
-        # 填充os
-        if os == '':
-            fill_os = str((int(follow_up_day) - int(oper_time)) // 30)
-            pathology_sheet.write(i, 47, fill_os)
+        # 填充并离散化os
+        if os != '':
+            fill_os = str(int(float(os)))
+            if int(fill_os) < 36:
+                pathology_sheet.write(i, 47, 0)
+            elif int(fill_os) < 60:
+                pathology_sheet.write(i, 47, 1)
+            else:
+                pathology_sheet.write(i, 47, 2)
+
+        elif os == '':
+            fill_os = str(int((int(follow_up_day) - int(oper_time)) / 30))
+            if int(fill_os) < 36:
+                pathology_sheet.write(i, 47, 0)
+            elif int(fill_os) < 60:
+                pathology_sheet.write(i, 47, 1)
+            else:
+                pathology_sheet.write(i, 47, 2)
 
 
 # 特征缩放
@@ -340,6 +355,6 @@ def get_feature_scaling(r_path, w_path):
 # add_col_num(temp_path, col_nums_path)
 # change_LN_into_num(origin_path, LN_path)
 # get_comorbidities(origin_path, comorbidities_path)
-# fill_and_trans(origin_path, temp_path)
-get_feature_scaling(temp_path, scale_path)
+fill_and_trans(origin_path, temp_path2)
+# get_feature_scaling(temp_path, scale_path)
 
